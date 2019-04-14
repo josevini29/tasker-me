@@ -137,6 +137,7 @@ public class Dashboad extends javax.swing.JFrame {
         btDelete = new javax.swing.JButton();
         btEdit = new javax.swing.JButton();
         dsThread = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tarefas");
@@ -251,6 +252,9 @@ public class Dashboad extends javax.swing.JFrame {
         });
         getContentPane().add(btEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 470, 70, -1));
         getContentPane().add(dsThread, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 200, 20));
+
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 50, 200, 170));
 
         pack();
         setLocationRelativeTo(null);
@@ -384,6 +388,7 @@ public class Dashboad extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tbTasks;

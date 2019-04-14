@@ -1,25 +1,19 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Task {
     
-    private String id;
-    private String title;
+    private String id;    
     private String message;
     private Date date;
     private Boolean remember;
+    private String type;
+    private ArrayList<Integer> dayWeek;
     private int interval;
     private int idTable;
     private Date dtAlert;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getMessage() {
         return message;
@@ -77,6 +71,19 @@ public class Task {
         this.dtAlert = dtAlert;
     }
 
-     
-    
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }    
+
+    public ArrayList<Integer> getDayWeek() {
+        return dayWeek;
+    }
+
+    public void setDayWeek(ArrayList<Integer> dayWeek) {
+        this.dayWeek = dayWeek;
+    }
 }

@@ -32,7 +32,7 @@ public class DataFormat {
             if (data.equals("")) {
                 return null;
             }
-        }        
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         sdf.setLenient(false);
         try {
@@ -70,6 +70,24 @@ public class DataFormat {
         }
     }
     
+    public String AmericaToBrasilDate(Date data) {
+        if (data != null) {
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            return df.format(data);
+        } else {
+            return "";
+        }
+    }
+
+    public String AmericaToBrasilTime(Date data) {
+        if (data != null) {
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+            return df.format(data);
+        } else {
+            return "";
+        }
+    }
+
     public static String AmericaToBrasilMesAno(Date data) {
         if (data != null) {
             SimpleDateFormat df = new SimpleDateFormat("MM-yyyy");
@@ -78,7 +96,7 @@ public class DataFormat {
             return "";
         }
     }
-    
+
     public static String AmericaToBrasilMes(Date data) {
         if (data != null) {
             SimpleDateFormat df = new SimpleDateFormat("MM");
@@ -87,7 +105,7 @@ public class DataFormat {
             return "";
         }
     }
-    
+
     public static String AmericaToBrasilAno(Date data) {
         if (data != null) {
             SimpleDateFormat df = new SimpleDateFormat("yyyy");

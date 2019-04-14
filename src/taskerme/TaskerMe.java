@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 import model.Json;
-import view.Dashboad;
+import view.TaskerList;
 
 /**
  *
@@ -37,7 +37,19 @@ public class TaskerMe {
 
     public static void main(String[] args) {
         try {
-
+            
+            try { 
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Windows".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
+                } 
+            } catch(Exception ignored){}
+            
+            TaskerList dash = new TaskerList();
+            dash.setVisible(true);
+            
             PopupMenu menu = new PopupMenu();
             MenuItem taskItem = new MenuItem("Tarefas");
             MenuItem exitItem = new MenuItem("Fechar");
@@ -45,7 +57,7 @@ public class TaskerMe {
                 @Override
                 public void actionPerformed(ActionEvent ev) {
                     try {
-                        Dashboad dash = new Dashboad();
+                        TaskerList dash = new TaskerList();
                         dash.setVisible(true);
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -66,7 +78,7 @@ public class TaskerMe {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        Dashboad dash = new Dashboad();
+                        TaskerList dash = new TaskerList();
                         dash.setVisible(true);
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -96,8 +108,8 @@ public class TaskerMe {
         }
     }
 
-    public static void alert(String title, String message) throws AWTException {
-        trayIcon.displayMessage(title, message, MessageType.INFO);
+    public static void alert(String message) throws AWTException {
+        trayIcon.displayMessage("", message, MessageType.INFO);
     }
 
     public static void defineThread() {
@@ -113,8 +125,8 @@ public class TaskerMe {
                         for (int i = 0; i < json.getTasks().size(); i++) {
                             if (json.getTasks().get(i).getDtAlert() != null) {
                                 if (json.getTasks().get(i).getDtAlert().before(new Date())) {
-                                    alert(json.getTasks().get(i).getTitle(), json.getTasks().get(i).getMessage());
-                                    System.out.println("Alerta: " + json.getTasks().get(i).getTitle() + " -> " + json.getTasks().get(i).getMessage());
+                                    alert(json.getTasks().get(i).getMessage());
+                                    System.out.println("Alerta: " + json.getTasks().get(i).getMessage());
                                     if (json.getTasks().get(i).getRemember()) {
                                         GregorianCalendar gc = new GregorianCalendar();
                                         gc.setTime(new Date());

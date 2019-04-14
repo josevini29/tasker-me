@@ -2,6 +2,11 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Projetos/tasker-me/src/view/Dashboad.java</file>
+            <file>file:/C:/Projetos/tasker-me/src/view/TaskerList.java</file>
+            <file>file:/C:/Projetos/tasker-me/src/view/TaskerEdit.java</file>
+            <file>file:/C:/Projetos/tasker-me/src/taskerme/TaskerMe.java</file>
+        </group>
     </open-files>
 </project-private>
