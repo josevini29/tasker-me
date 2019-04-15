@@ -63,7 +63,7 @@ public class TaskerList extends javax.swing.JFrame {
                 }
             });
             jpMain.add(jbtAdd);
-            jbtAdd.setBounds(screen.width - 150, screen.height - 150, 60, 60);            
+            jbtAdd.setBounds(screen.width - 150, screen.height - 150, 60, 60);
 
             int maxPanelX = (int) screen.width / sizePanelWidth;
             int diffPanelX = screen.width % sizePanelWidth;
@@ -127,10 +127,10 @@ public class TaskerList extends javax.swing.JFrame {
                     lblDateTime.setBounds(10, 130, 330, 20);
 
                     lblAditional.setFont(new java.awt.Font("Noto Mono", 0, 12)); // NOI18N
-                    lblAditional.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);                    
-                    if (tasks.get(i).getRemember()) {                        
+                    lblAditional.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                    if (tasks.get(i).getRemember()) {
                         lblAditional.setText("Repetir a cada " + tasks.get(i).getInterval() + " minutos");
-                    } else {                        
+                    } else {
                         lblAditional.setText("");
                     }
                     lblAditional.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -173,8 +173,10 @@ public class TaskerList extends javax.swing.JFrame {
                 jbtDelete.setFont(new java.awt.Font("SimSun-ExtB", 0, 14)); // NOI18N
                 jbtDelete.setText("Excluir");
                 jbtDelete.setFocusable(false);
+                jbtDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/remove.png"))); // NOI18N        
+                jbtDelete.setIconTextGap(10);
                 jpTask.add(jbtDelete);
-                jbtDelete.setBounds(240, 190, 100, 30);
+                jbtDelete.setBounds(220, 190, 120, 30);
 
                 tasks.get(i).setIdTable(i);
                 final String id = tasks.get(i).getId();
@@ -225,7 +227,7 @@ public class TaskerList extends javax.swing.JFrame {
                 generateList();
                 TaskerMe.updateTask();
             }
-        } catch (Exception ex) {            
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }

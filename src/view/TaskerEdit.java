@@ -324,16 +324,19 @@ public class TaskerEdit extends javax.swing.JDialog {
         jpDatetime.setBounds(110, 270, 470, 40);
 
         jbtExit.setFont(new java.awt.Font("Noto Mono", 0, 14)); // NOI18N
+        jbtExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/exit.png"))); // NOI18N
         jbtExit.setText("Sair");
+        jbtExit.setIconTextGap(8);
         jbtExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtExitActionPerformed(evt);
             }
         });
         getContentPane().add(jbtExit);
-        jbtExit.setBounds(370, 380, 100, 40);
+        jbtExit.setBounds(350, 380, 110, 40);
 
         jbtSave.setFont(new java.awt.Font("Noto Mono", 0, 14)); // NOI18N
+        jbtSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/save.png"))); // NOI18N
         jbtSave.setText("Salvar");
         jbtSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -341,7 +344,7 @@ public class TaskerEdit extends javax.swing.JDialog {
             }
         });
         getContentPane().add(jbtSave);
-        jbtSave.setBounds(480, 380, 100, 40);
+        jbtSave.setBounds(470, 380, 110, 40);
 
         jpPeriodic.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         jpPeriodic.setLayout(null);
