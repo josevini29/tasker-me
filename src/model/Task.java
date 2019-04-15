@@ -11,8 +11,8 @@ public class Task {
     private Boolean remember;
     private String type;
     private ArrayList<Integer> dayWeek;
-    private int interval;
-    private int idTable;
+    private Integer interval;
+    private Integer idTable;
     private Date dtAlert;
 
     public String getMessage() {
@@ -39,28 +39,12 @@ public class Task {
         this.remember = remember;
     }
 
-    public int getInterval() {
-        return interval;
-    }
-
-    public void setInterval(int interval) {
-        this.interval = interval;
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public int getIdTable() {
-        return idTable;
-    }
-
-    public void setIdTable(int idTable) {
-        this.idTable = idTable;
     }
 
     public Date getDtAlert() {
@@ -85,5 +69,21 @@ public class Task {
 
     public void setDayWeek(ArrayList<Integer> dayWeek) {
         this.dayWeek = dayWeek;
+    }
+
+    public Integer getInterval() {
+        return interval;
+    }
+
+    public void setInterval(Integer interval) {
+        this.interval = interval;
+    }
+
+    public Integer getIdTable() {
+        return idTable;
+    }
+
+    public void setIdTable(Integer idTable) {
+        this.idTable = idTable;
     }
 }

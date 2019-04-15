@@ -7,6 +7,8 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import javax.swing.JButton;
@@ -38,6 +40,7 @@ public class TaskerList extends javax.swing.JFrame {
         initComponents();
         setExtendedState(TaskerList.MAXIMIZED_BOTH);
         generateList();
+        this.setTitle("Lista de Tarefas" + " - Status: " + (TaskerMe.thread.isAlive() ? "Ok" : "Stopped"));
     }
 
     private void generateList() {
@@ -45,6 +48,22 @@ public class TaskerList extends javax.swing.JFrame {
         try {
 
             jpMain.removeAll();
+
+            JButton jbtAdd = new JButton();
+            jbtAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/add.png"))); // NOI18N
+            jbtAdd.setToolTipText("");
+            jbtAdd.setBorder(null);
+            jbtAdd.setBorderPainted(false);
+            jbtAdd.setContentAreaFilled(false);
+            jbtAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            jbtAdd.setFocusable(false);
+            jbtAdd.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jbtAddActionPerformed(evt);
+                }
+            });
+            jpMain.add(jbtAdd);
+            jbtAdd.setBounds(screen.width - 150, screen.height - 150, 60, 60);            
 
             int maxPanelX = (int) screen.width / sizePanelWidth;
             int diffPanelX = screen.width % sizePanelWidth;
@@ -60,7 +79,13 @@ public class TaskerList extends javax.swing.JFrame {
             int x = diffSpaceWidth;
             int y = 10;
 
-            tasks = manip.readJson().getTasks();
+            try {
+                tasks = manip.readJson().getTasks();
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, "Arquivo base não encontrado, um novo será gerado");
+                ManipJson.createFile();
+                return;
+            }
 
             for (int i = 0; i < tasks.size(); i++) {
 
@@ -79,10 +104,17 @@ public class TaskerList extends javax.swing.JFrame {
                 lblMessage.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
                 lblMessage.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
                 lblMessage.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+                final Task task = tasks.get(i);
+                lblMessage.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        openTaskerEdit(task);
+                    }
+                });
                 jpTask.add(lblMessage);
                 lblMessage.setBounds(10, 10, 330, 110);
 
-                if (tasks.get(i).getRemember()) {
+                if (tasks.get(i).getType().equals("D")) {
 
                     lblDateTime.setFont(new java.awt.Font("Noto Mono", 0, 12)); // NOI18N
                     lblDateTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -95,14 +127,46 @@ public class TaskerList extends javax.swing.JFrame {
                     lblDateTime.setBounds(10, 130, 330, 20);
 
                     lblAditional.setFont(new java.awt.Font("Noto Mono", 0, 12)); // NOI18N
-                    lblAditional.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                    lblAditional.setText("Repetir a cada " + tasks.get(i).getInterval() + " minutos");
+                    lblAditional.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);                    
+                    if (tasks.get(i).getRemember()) {                        
+                        lblAditional.setText("Repetir a cada " + tasks.get(i).getInterval() + " minutos");
+                    } else {                        
+                        lblAditional.setText("");
+                    }
                     lblAditional.setVerticalAlignment(javax.swing.SwingConstants.TOP);
                     lblAditional.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
                     lblAditional.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
                     lblAditional.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
                     jpTask.add(lblAditional);
                     lblAditional.setBounds(10, 160, 330, 20);
+
+                } else if (tasks.get(i).getType().equals("S")) {
+
+                    lblDateTime.setFont(new java.awt.Font("Noto Mono", 0, 12)); // NOI18N
+                    lblDateTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                    lblDateTime.setText("Hora: " + data.AmericaToBrasilTime(tasks.get(i).getDate()));
+                    lblDateTime.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+                    lblDateTime.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+                    lblDateTime.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+                    lblDateTime.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+                    jpTask.add(lblDateTime);
+                    lblDateTime.setBounds(10, 160, 330, 20);
+
+                    lblAditional.setFont(new java.awt.Font("Noto Mono", 0, 12)); // NOI18N
+                    lblAditional.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                    String aditional = "";
+                    String daysWeek[] = new String[]{"Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"};
+                    for (Integer dayWeekNotif : tasks.get(i).getDayWeek()) {
+                        aditional += ("," + daysWeek[dayWeekNotif - 1]);
+                    }
+                    aditional = aditional.substring(1);
+                    lblAditional.setText(aditional);
+                    lblAditional.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+                    lblAditional.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+                    lblAditional.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+                    lblAditional.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+                    jpTask.add(lblAditional);
+                    lblAditional.setBounds(10, 130, 330, 20);
 
                 }
 
@@ -111,12 +175,12 @@ public class TaskerList extends javax.swing.JFrame {
                 jbtDelete.setFocusable(false);
                 jpTask.add(jbtDelete);
                 jbtDelete.setBounds(240, 190, 100, 30);
-                
+
                 tasks.get(i).setIdTable(i);
-                final int idTable = i;
+                final String id = tasks.get(i).getId();
                 jbtDelete.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        deleteTask(idTable);
+                        deleteTask(id);
                     }
                 });
 
@@ -135,38 +199,21 @@ public class TaskerList extends javax.swing.JFrame {
 
             }
 
-            JButton jbtAdd = new JButton();
-            jbtAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/add.png"))); // NOI18N
-            jbtAdd.setToolTipText("");
-            jbtAdd.setBorder(null);
-            jbtAdd.setBorderPainted(false);
-            jbtAdd.setContentAreaFilled(false);
-            jbtAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-            jbtAdd.setFocusable(false);
-            jbtAdd.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jbtAddActionPerformed(evt);
-                }
-            });
-            jpMain.add(jbtAdd);
-            jbtAdd.setBounds(610, 170, 60, 60);
-
             jpMain.setSize(jpMain.getSize().width, y);
             jbtAdd.setLocation(screen.width - 130, screen.height - 170);
 
-        } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, "Arquivo base não encontrado, um novo será gerado");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
     }
 
-    public void deleteTask(int idTable) {
+    public void deleteTask(String id) {
         try {
+            tasks = manip.readJson().getTasks();
             if (JOptionPane.showConfirmDialog(this, "Deseja realmente deletar está tarefa?", "Confirmação", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
                 for (int i = 0; i < tasks.size(); i++) {
-                    if (tasks.get(i).getIdTable() == idTable) {
+                    if (tasks.get(i).getId().equals(id)) {
                         tasks.remove(i);
                     }
                 }
@@ -176,11 +223,17 @@ public class TaskerList extends javax.swing.JFrame {
 
                 manip.writeJson(json);
                 generateList();
-                TaskerMe.updateTask(json);
+                TaskerMe.updateTask();
             }
-        } catch (Exception ex) {
+        } catch (Exception ex) {            
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
+    }
+
+    public void openTaskerEdit(Task task) {
+        TaskerEdit edit = new TaskerEdit(this, true, task);
+        edit.setVisible(true);
+        generateList();
     }
 
     /**
@@ -196,7 +249,7 @@ public class TaskerList extends javax.swing.JFrame {
         jpMain = new javax.swing.JPanel();
         jbtAdd = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lista de Tarefas");
 
         jpScroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -237,9 +290,7 @@ public class TaskerList extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddActionPerformed
-        TaskerEdit edit = new TaskerEdit(this, true, null);
-        edit.setVisible(true);
-        generateList();
+        openTaskerEdit(null);
     }//GEN-LAST:event_jbtAddActionPerformed
 
     /**
