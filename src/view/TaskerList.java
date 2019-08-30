@@ -7,6 +7,7 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
@@ -15,6 +16,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import model.Json;
 import model.Task;
 import taskerme.ManipJson;
@@ -35,6 +38,8 @@ public class TaskerList extends javax.swing.JFrame {
 
     private int sizePanelWidth = 355;
     private int sizePanelHeight = 240;
+    
+    JButton jbtAdd;
 
     public TaskerList() {
         initComponents();
@@ -46,10 +51,12 @@ public class TaskerList extends javax.swing.JFrame {
     private void generateList() {
 
         try {
+            
+            jbtAdd = null;
 
             jpMain.removeAll();
 
-            JButton jbtAdd = new JButton();
+            jbtAdd = new JButton();
             jbtAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/add.png"))); // NOI18N
             jbtAdd.setToolTipText("");
             jbtAdd.setBorder(null);
@@ -59,7 +66,7 @@ public class TaskerList extends javax.swing.JFrame {
             jbtAdd.setFocusable(false);
             jbtAdd.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jbtAddActionPerformed(evt);
+                    openTaskerEdit(null);
                 }
             });
             jpMain.add(jbtAdd);
@@ -77,7 +84,7 @@ public class TaskerList extends javax.swing.JFrame {
 
             int qtActualX = 0;
             int x = diffSpaceWidth;
-            int y = 10;
+            int y = 80;
 
             try {
                 tasks = manip.readJson().getTasks();
@@ -201,14 +208,22 @@ public class TaskerList extends javax.swing.JFrame {
 
             }
 
-            jpMain.setSize(jpMain.getSize().width, y);
-            jbtAdd.setLocation(screen.width - 130, screen.height - 170);
+            jpMain.setPreferredSize(new Dimension(jpMain.getSize().width, y + 500));
+            jbtAdd.setLocation(15, 10);
+
+            //jpScroll.getViewport().addChangeListener(new ListenAdditionsScrolled());
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
     }
+
+    /*public class ListenAdditionsScrolled implements ChangeListener {
+        public void stateChanged(ChangeEvent e) {            
+            jbtAdd.setBounds(screen.width - 150, (screen.height - 150) + jpScroll.getVerticalScrollBar().getValue(), 60, 60);
+        }
+    }*/
 
     public void deleteTask(String id) {
         try {
@@ -249,30 +264,26 @@ public class TaskerList extends javax.swing.JFrame {
 
         jpScroll = new javax.swing.JScrollPane();
         jpMain = new javax.swing.JPanel();
-        jbtAdd = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lista de Tarefas");
 
-        jpScroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jpScroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        jpMain.setLayout(null);
-
-        jbtAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/add.png"))); // NOI18N
-        jbtAdd.setToolTipText("");
-        jbtAdd.setBorder(null);
-        jbtAdd.setBorderPainted(false);
-        jbtAdd.setContentAreaFilled(false);
-        jbtAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jbtAdd.setFocusable(false);
-        jbtAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtAddActionPerformed(evt);
+        jpMain.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                jpMainMouseWheelMoved(evt);
             }
         });
-        jpMain.add(jbtAdd);
-        jbtAdd.setBounds(610, 170, 60, 60);
+
+        javax.swing.GroupLayout jpMainLayout = new javax.swing.GroupLayout(jpMain);
+        jpMain.setLayout(jpMainLayout);
+        jpMainLayout.setHorizontalGroup(
+            jpMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1103, Short.MAX_VALUE)
+        );
+        jpMainLayout.setVerticalGroup(
+            jpMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 603, Short.MAX_VALUE)
+        );
 
         jpScroll.setViewportView(jpMain);
 
@@ -280,20 +291,20 @@ public class TaskerList extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 1105, Short.MAX_VALUE)
+            .addComponent(jpScroll)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
+            .addComponent(jpScroll)
         );
 
         setSize(new java.awt.Dimension(1121, 644));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddActionPerformed
-        openTaskerEdit(null);
-    }//GEN-LAST:event_jbtAddActionPerformed
+    private void jpMainMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_jpMainMouseWheelMoved
+
+    }//GEN-LAST:event_jpMainMouseWheelMoved
 
     /**
      * @param args the command line arguments
@@ -332,7 +343,6 @@ public class TaskerList extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jbtAdd;
     private javax.swing.JPanel jpMain;
     private javax.swing.JScrollPane jpScroll;
     // End of variables declaration//GEN-END:variables

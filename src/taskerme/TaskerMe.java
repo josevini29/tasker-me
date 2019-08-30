@@ -53,8 +53,8 @@ public class TaskerMe {
             } catch (Exception ignored) {
             }
 
-            //TaskerList dash = new TaskerList();
-            //dash.setVisible(true);
+            TaskerList dash = new TaskerList();
+            dash.setVisible(true);
 
             PopupMenu menu = new PopupMenu();
             MenuItem taskItem = new MenuItem("Tarefas");
